@@ -1,0 +1,19 @@
+html * {
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+}
+
+header {
+    background-color: lightgreen;
+}
+
+main {
+    background-color: lightcoral;
+}
+
+
+footer {
+    background-color: lightblue;
+    
+}
