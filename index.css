@@ -1,20 +1,28 @@
+
 html * {
     padding: 0px;
     margin: 0px;
-    border: 0px;
+    box-sizing: border-box;
+    font-family: 'Press Start 2P', cursive;
 }
+html {
+    background-color: #222;
+    color: white;
+  }
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 100vh;
+    justify-content: space-evenly;
   }
 
 header {
-    background-color: lightgreen;
+    
 }
 
 main {
-    background-color: lightcoral;
+
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
@@ -28,25 +36,30 @@ td{
     width: 50px;
     height: 50px;
 }
-#start {
+#settings {
+    display: flex;
+    flex-flow: column;
+    height: 100px;
+    justify-content: space-around;
+}
+button {
     font-size: 32px;
-
 }
 
 footer {
-    background-color: lightblue;
+
     
 }
 
 .red {
-    background-color: red;
+    background-color: rgb(223, 55, 55);
   }
   .blue {
-    background-color: blue;
+    background-color: rgb(49, 49, 189);
   }
   .green {
     background-color: rgb(28, 121, 74);
   }
   .yellow {
-    background-color: yellow;
+    background-color: rgb(207, 207, 35);
   }

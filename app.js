@@ -9,14 +9,14 @@ const table = document.getElementById('board');
 
 let snake = {
     body: [
-        [10,5], [10,6], [10,7], [10,8], [10,9], [10,10]
     ],
     direction: up
 }
 
 let gameState = {
-    rat: [7,7],
+    rat: [100,100],
     snake:snake,
+    playing:false
 }
 
 function makeRow(){
@@ -28,23 +28,41 @@ function makeRow(){
     table.appendChild(row);
 }
 
-
-
-function buildInitialState() {
+function buildBoard() {
     for ( let i =0; i<20; i++){
         makeRow()
     }
+}
 
+function clearGame() {
+        for (let i=0; i<table.children.length; i++){
+            for (let j =0; j<table.children.item(i).children.length;j++){
+                table.children.item(i).children.item(j).className=''
+            }
+        }
+        snake = {
+            body: [
+            ],
+            direction: up
+        }
+        
+        gameState = {
+            rat: [100,100],
+            snake:snake,
+            playing:false
+        }
+        renderState()
 }
 
 // render
 function renderState() {
-    console.log(gameState)
-    console.log(gameState.snake.body)
-    snake.body.forEach(element => {
+    snake.body.forEach((element, idx) => {
         let x=element[0]
         let y=element[1]
-        table.children.item(x).children.item(y).className='red'
+        if(idx%2===1)table.children.item(x).children.item(y).className='red'
+        if(idx%2===0)table.children.item(x).children.item(y).className='blue'
+        if(idx==0)table.children.item(x).children.item(y).className='yellow'
+        // if((snake.body.length-idx)<2)table.children.item(x).children.item(y).className='yellow'
     });
     table.children.item(gameState.rat[0]).children.item(gameState.rat[1]).className='green'
 
@@ -52,7 +70,6 @@ function renderState() {
 
 function ratCheck(){
     if (gameState.snake.body[0][0] == gameState.rat[0] && gameState.snake.body[0][1] == gameState.rat[1]){
-        console.log("Eaten")
         gameState.rat[0]= Math.floor(Math.random() * 20)
         gameState.rat[1]= Math.floor(Math.random() * 20)
     }else{
@@ -60,7 +77,20 @@ function ratCheck(){
         table.children.item(empty[0]).children.item(empty[1]).className=''
     }
 }
-
+function bodyCheck(){
+    for(let i=1; i<snake.body.length; i++){
+        let x=snake.body[i][0]
+        let y=snake.body[i][1]
+        if (gameState.snake.body[0][0] == x && gameState.snake.body[0][1] == y){
+            clearGame()
+        }
+    }
+}
+function borderCheck() {
+    if (gameState.snake.body[0][0] > 19 || gameState.snake.body[0][0] < 0 || gameState.snake.body[0][1] >19 || gameState.snake.body[0][1] <0){
+        clearGame()
+    }
+}
 
 
 function gameStart() {
@@ -73,19 +103,22 @@ function gameStart() {
 
     gameState = {
         rat: [7,7],
-        snake:snake
+        snake:snake,
+        playing:true
     }
   renderState() // show the user the new state
-  setInterval(tick, 50)
 }
 
 function tick() {
-    // this is an incremental change that happens to the state every time you update...
-    gameState.snake.body.unshift(
-        [gameState.snake.body[0][0]+gameState.snake.direction[0],
-        gameState.snake.body[0][1]+gameState.snake.direction[1]]
-    )
-    ratCheck()
+    if (gameState.playing){
+        gameState.snake.body.unshift(
+            [gameState.snake.body[0][0]+gameState.snake.direction[0],
+            gameState.snake.body[0][1]+gameState.snake.direction[1]]
+            )
+            bodyCheck()
+            borderCheck()
+            ratCheck()
+    }
     renderState();
   }
 
@@ -110,10 +143,17 @@ document.addEventListener('keydown', function(event) {
         tick()
     }
     else if (event.key == 1) {
-        console.log(gameState.snake.direction);
+        gameState.playing=false
+    }
+    else if (event.key == 2) {
+        gameState.playing=true
+    }
+    else if (event.key == 3) {
+        clearGame()
     }
 });
 
-buildInitialState()
+buildBoard()
 start = document.getElementById('start')
 start.addEventListener('click',gameStart)
+setInterval(tick, 150)
