@@ -3,6 +3,11 @@ html * {
     margin: 0px;
     border: 0px;
 }
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
 header {
     background-color: lightgreen;
@@ -10,10 +15,38 @@ header {
 
 main {
     background-color: lightcoral;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
 }
+table{
+    background-color: rgb(7, 7, 7);
+    
+}
+td{
+    background-color: rgb(175, 175, 175);
+    width: 50px;
+    height: 50px;
+}
+#start {
+    font-size: 32px;
 
+}
 
 footer {
     background-color: lightblue;
     
 }
+
+.red {
+    background-color: red;
+  }
+  .blue {
+    background-color: blue;
+  }
+  .green {
+    background-color: rgb(28, 121, 74);
+  }
+  .yellow {
+    background-color: yellow;
+  }

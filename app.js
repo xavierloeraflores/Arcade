@@ -1,12 +1,11 @@
-const up =[1,0]
-const down = [-1,0]
+const up =[-1,0]
+const down = [1,0]
 const left = [0, -1]
 const right = [0,1]
 
 const game = document.getElementById('game')
 const settings = document.getElementById('settings')
-
-
+const table = document.getElementById('board');
 
 let snake = {
     body: [
@@ -17,59 +16,78 @@ let snake = {
 
 let gameState = {
     rat: [7,7],
-    snake:snake
+    snake:snake,
+}
+
+function makeRow(){
+    const row = document.createElement('tr');
+    for (let i = 0; i < 20; i++){
+        const td = document.createElement('td');
+        row.appendChild(td);
+    }
+    table.appendChild(row);
 }
 
 
-// state
-let initialState;
 
 function buildInitialState() {
-
+    for ( let i =0; i<20; i++){
+        makeRow()
+    }
 
 }
 
 // render
 function renderState() {
     console.log(gameState)
-    game.innerText=gameState.snake.direction
     console.log(gameState.snake.body)
-    // game.innerText+=" | " + gameState.snake.body
+    snake.body.forEach(element => {
+        let x=element[0]
+        let y=element[1]
+        table.children.item(x).children.item(y).className='red'
+    });
+    table.children.item(gameState.rat[0]).children.item(gameState.rat[1]).className='green'
+
 }
 
 function ratCheck(){
-    console.log("snake",gameState.snake.body[0], " length", gameState.snake.body.length)
-     console.log("rat", gameState.rat)
     if (gameState.snake.body[0][0] == gameState.rat[0] && gameState.snake.body[0][1] == gameState.rat[1]){
         console.log("Eaten")
+        gameState.rat[0]= Math.floor(Math.random() * 20)
+        gameState.rat[1]= Math.floor(Math.random() * 20)
     }else{
-        gameState.snake.body.pop()
+        let empty = gameState.snake.body.pop()
+        table.children.item(empty[0]).children.item(empty[1]).className=''
     }
 }
 
 
-// listeners
-function onBoardClick() {
-  // update state, maybe with another dozen or so helper functions...
 
+function gameStart() {
+    snake = {
+        body: [
+            [10,5], [10,6], [10,7], [10,8], [10,9], [10,10]
+        ],
+        direction: up
+    }
+
+    gameState = {
+        rat: [7,7],
+        snake:snake
+    }
   renderState() // show the user the new state
+  setInterval(tick, 50)
 }
 
 function tick() {
     // this is an incremental change that happens to the state every time you update...
     gameState.snake.body.unshift(
-        [
-                gameState.snake.body[0][0]+gameState.snake.direction[0]
-            ,
-                gameState.snake.body[0][1]+gameState.snake.direction[1]
-        ]
+        [gameState.snake.body[0][0]+gameState.snake.direction[0],
+        gameState.snake.body[0][1]+gameState.snake.direction[1]]
     )
     ratCheck()
     renderState();
   }
-  
-// setInterval(tick, 1000 / 30) // as close to 30 frames per second as possible
-
 
 
 
@@ -96,5 +114,6 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-
-console.log(gameState)
+buildInitialState()
+start = document.getElementById('start')
+start.addEventListener('click',gameStart)
