@@ -117,15 +117,19 @@ function tick() {
     if (gameState.playing){
         //Adds new head to snake body 
 
+
         gameState.snake.body.unshift(
             [gameState.snake.body[0][0]+gameState.snake.direction[0],
             gameState.snake.body[0][1]+gameState.snake.direction[1]]
             )
-        bodyCheck()//Checks if snake eats itself
-        borderCheck()//Checks if snake runs into the border
-        ratCheck()//Snake Tail is removed here
+        if(bodyCheck()){//Checks if snake eats itself
+            if(borderCheck()){//Checks if snake runs into the border
+                ratCheck()//Rat logic & Snake Tail is removed here 
+                renderState()
+            }//Checks if snake runs into the border
+        }
     }
-    renderState();
+
 }
 
 
@@ -151,14 +155,18 @@ function bodyCheck(){
         let y=snake.body[i][1]
         if (gameState.snake.body[0][0] == x && gameState.snake.body[0][1] == y){
             clearGame()
+            return false
         }
     }
+    return true
 }
 function borderCheck() {
     //checks to see if the head has collided with game border & ends game
     if (gameState.snake.body[0][0] > 19 || gameState.snake.body[0][0] < 0 || gameState.snake.body[0][1] >19 || gameState.snake.body[0][1] <0){
         clearGame()
+        return false
     }
+    return true
 }
 
 
