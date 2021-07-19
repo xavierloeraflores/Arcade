@@ -107,7 +107,7 @@ function gameStart() {
         rat: [7,7],
         snake:snake,
         playing:true,
-        score:0
+        score:6
     }
     start.style.display= 'none'
     stop.style.display= 'block'
