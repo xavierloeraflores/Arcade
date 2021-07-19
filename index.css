@@ -17,9 +17,7 @@ body {
     justify-content: space-evenly;
   }
 
-header {
-    
-}
+
 
 main {
 
@@ -41,15 +39,14 @@ td{
     flex-flow: column;
     height: 100px;
     justify-content: space-around;
+    font-size: 28px;
+    text-align: center;
 }
 button {
     font-size: 32px;
 }
 
-footer {
 
-    
-}
 
 .red {
     background-color: rgb(223, 55, 55);

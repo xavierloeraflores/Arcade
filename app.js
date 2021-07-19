@@ -1,11 +1,10 @@
+///////////////
+//      Defining Global Variables
+//////////////
 const up =[-1,0]
 const down = [1,0]
 const left = [0, -1]
 const right = [0,1]
-
-const game = document.getElementById('game')
-const settings = document.getElementById('settings')
-const table = document.getElementById('board');
 
 let snake = {
     body: [
@@ -16,8 +15,22 @@ let snake = {
 let gameState = {
     rat: [100,100],
     snake:snake,
-    playing:false
+    playing:false,
+    score:0
 }
+///////////////
+//      HTML Elements
+//////////////
+const game = document.getElementById('game')
+const settings = document.getElementById('settings')
+const start = document.getElementById('start')
+const stop = document.getElementById('stop')
+const table = document.getElementById('board');
+const score = document.getElementById('score')
+
+///////////////
+//      Table Creation
+//////////////
 
 function makeRow(){
     const row = document.createElement('tr');
@@ -32,52 +45,107 @@ function buildBoard() {
     for ( let i =0; i<20; i++){
         makeRow()
     }
+    stop.style.display= 'none'
+    start.style.display= 'block'
 }
 
-function clearGame() {
-        for (let i=0; i<table.children.length; i++){
-            for (let j =0; j<table.children.item(i).children.length;j++){
-                table.children.item(i).children.item(j).className=''
-            }
-        }
-        snake = {
-            body: [
-            ],
-            direction: up
-        }
-        
-        gameState = {
-            rat: [100,100],
-            snake:snake,
-            playing:false
-        }
-        renderState()
-}
-
-// render
+///////////////
+//      Game Functions
+//////////////
 function renderState() {
+    //Renders the state of every element on the board
+    score.innerText=gameState.score
+    //Renders snake colors
     snake.body.forEach((element, idx) => {
         let x=element[0]
         let y=element[1]
         if(idx%2===1)table.children.item(x).children.item(y).className='red'
         if(idx%2===0)table.children.item(x).children.item(y).className='blue'
         if(idx==0)table.children.item(x).children.item(y).className='yellow'
-        // if((snake.body.length-idx)<2)table.children.item(x).children.item(y).className='yellow'
     });
-    table.children.item(gameState.rat[0]).children.item(gameState.rat[1]).className='green'
-
+    //Renders Rat
+    let ratX = gameState.rat[0]
+    let ratY = gameState.rat[1]
+    table.children.item(ratX).children.item(ratY).className='green'
 }
 
+function clearGame() {
+    //Clears the Game board
+    for (let i=0; i<table.children.length; i++){
+        for (let j =0; j<table.children.item(i).children.length;j++){
+            table.children.item(i).children.item(j).className=''
+        }
+    }
+    //Empties Snake
+    snake = {
+        body: [
+        ],
+        direction: up
+    }
+    //Removes rat and stops the playing snake logic
+    gameState = {
+        rat: [100,100],
+        snake:snake,
+        playing:false,
+        score:gameState.score//Sets the score to previous game score
+    }
+    stop.style.display= 'none'
+    start.style.display= 'block'
+    renderState()//Renders empty board
+}
+
+function gameStart() {
+    //Sets initial snake
+    snake = {
+        body: [
+            [10,5], [10,6], [10,7], [10,8], [10,9], [10,10]
+        ],
+        direction: up
+    }
+    //Places rate & sets playing to true
+    gameState = {
+        rat: [7,7],
+        snake:snake,
+        playing:true,
+        score:0
+    }
+    start.style.display= 'none'
+    stop.style.display= 'block'
+}
+
+function tick() {
+    if (gameState.playing){
+        //Adds new head to snake body 
+
+        gameState.snake.body.unshift(
+            [gameState.snake.body[0][0]+gameState.snake.direction[0],
+            gameState.snake.body[0][1]+gameState.snake.direction[1]]
+            )
+        bodyCheck()//Checks if snake eats itself
+        borderCheck()//Checks if snake runs into the border
+        ratCheck()//Snake Tail is removed here
+    }
+    renderState();
+}
+
+
+///////////////
+//      Snake Collision Logic Functions
+//////////////
 function ratCheck(){
+    //Checks to see if the head has eaten the rat & if so-> creates new rat
     if (gameState.snake.body[0][0] == gameState.rat[0] && gameState.snake.body[0][1] == gameState.rat[1]){
         gameState.rat[0]= Math.floor(Math.random() * 20)
         gameState.rat[1]= Math.floor(Math.random() * 20)
+        gameState.score+=1
     }else{
+        //Otherwise, just move the snake
         let empty = gameState.snake.body.pop()
         table.children.item(empty[0]).children.item(empty[1]).className=''
     }
 }
 function bodyCheck(){
+    //Checks to see if the head has collided with the body & ends game
     for(let i=1; i<snake.body.length; i++){
         let x=snake.body[i][0]
         let y=snake.body[i][1]
@@ -87,73 +155,53 @@ function bodyCheck(){
     }
 }
 function borderCheck() {
+    //checks to see if the head has collided with game border & ends game
     if (gameState.snake.body[0][0] > 19 || gameState.snake.body[0][0] < 0 || gameState.snake.body[0][1] >19 || gameState.snake.body[0][1] <0){
         clearGame()
     }
 }
 
 
-function gameStart() {
-    snake = {
-        body: [
-            [10,5], [10,6], [10,7], [10,8], [10,9], [10,10]
-        ],
-        direction: up
-    }
-
-    gameState = {
-        rat: [7,7],
-        snake:snake,
-        playing:true
-    }
-  renderState() // show the user the new state
-}
-
-function tick() {
-    if (gameState.playing){
-        gameState.snake.body.unshift(
-            [gameState.snake.body[0][0]+gameState.snake.direction[0],
-            gameState.snake.body[0][1]+gameState.snake.direction[1]]
-            )
-            bodyCheck()
-            borderCheck()
-            ratCheck()
-    }
-    renderState();
-  }
-
-
-
-//Changes Snake direction
+///////////////
+//      Keyboard Bindings
+//////////////
 document.addEventListener('keydown', function(event) {
     if (event.keyCode == 37 && gameState.snake.direction!=right) {
         gameState.snake.direction=left;
-        tick()
+        tick()//Snake Slithers Faster with button presses
     }
     else if (event.keyCode == 38 && gameState.snake.direction!=down) {
         gameState.snake.direction=up
-        tick()
+        tick()//Snake Slithers Faster with button presses
     }
     else if (event.keyCode == 39 && gameState.snake.direction!=left) {
         gameState.snake.direction=right
-        tick()
+        tick()//Snake Slithers Faster with button presses
     }
     else if (event.keyCode == 40 && gameState.snake.direction!=up) {
         gameState.snake.direction=down
-        tick()
+        tick()//Snake Slithers Faster with button presses
     }
     else if (event.key == 1) {
-        gameState.playing=false
+        gameState.playing=false//not so hidden Pause Feature
     }
     else if (event.key == 2) {
-        gameState.playing=true
+        gameState.playing=true//not so hidden Resume Feature 
     }
     else if (event.key == 3) {
-        clearGame()
+        clearGame()//Stop Game Keyboard Shortcut
     }
+    else if (event.key == 4) {
+        gameStart()//Start Game Keyboard Shortcut
+    }
+    
 });
 
+
+///////////////
+//      Main
+//////////////
 buildBoard()
-start = document.getElementById('start')
 start.addEventListener('click',gameStart)
-setInterval(tick, 150)
+stop.addEventListener('click', clearGame)
+setInterval(tick, 100)
