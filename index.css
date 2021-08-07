@@ -31,8 +31,8 @@ table{
 }
 td{
     background-color: rgb(175, 175, 175);
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
 }
 #settings {
     display: flex;
@@ -64,6 +64,9 @@ button {
   .red {
     background-color: rgb(207, 207, 35);
   }
+<<<<<<< HEAD
   .blue {
     background-color: rgb(70, 26, 132);
   }
+=======
+>>>>>>> db999f028433c963063b9814e71f09b319da8559
