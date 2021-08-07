@@ -47,16 +47,23 @@ button {
 }
 
 
-
+/* 
 .red {
     background-color: rgb(223, 55, 55);
-  }
-  .blue {
+  } */
+  /* .blue {
     background-color: rgb(49, 49, 189);
-  }
+  } */
   .green {
     background-color: rgb(28, 121, 74);
   }
   .yellow {
+    background-color: rgb(70, 26, 132);
+  }
+
+  .red {
     background-color: rgb(207, 207, 35);
+  }
+  .blue {
+    background-color: rgb(70, 26, 132);
   }

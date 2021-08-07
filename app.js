@@ -176,19 +176,19 @@ function borderCheck() {
 document.addEventListener('keydown', function(event) {
     if (event.keyCode == 37 && gameState.snake.direction!=right) {
         gameState.snake.direction=left;
-        tick()//Snake Slithers Faster with button presses
+        // tick()//Snake Slithers Faster with button presses
     }
     else if (event.keyCode == 38 && gameState.snake.direction!=down) {
         gameState.snake.direction=up
-        tick()//Snake Slithers Faster with button presses
+        // tick()//Snake Slithers Faster with button presses
     }
     else if (event.keyCode == 39 && gameState.snake.direction!=left) {
         gameState.snake.direction=right
-        tick()//Snake Slithers Faster with button presses
+        // tick()//Snake Slithers Faster with button presses
     }
     else if (event.keyCode == 40 && gameState.snake.direction!=up) {
         gameState.snake.direction=down
-        tick()//Snake Slithers Faster with button presses
+        // tick()//Snake Slithers Faster with button presses
     }
     else if (event.key == 1) {
         gameState.playing=false//not so hidden Pause Feature
