@@ -54,6 +54,9 @@ button {
   /* .blue {
     background-color: rgb(49, 49, 189);
   } */
+  .blue {
+    background-color: rgb(70, 26, 132);
+  }
   .green {
     background-color: rgb(28, 121, 74);
   }
@@ -64,9 +67,3 @@ button {
   .red {
     background-color: rgb(207, 207, 35);
   }
-<<<<<<< HEAD
-  .blue {
-    background-color: rgb(70, 26, 132);
-  }
-=======
->>>>>>> db999f028433c963063b9814e71f09b319da8559
